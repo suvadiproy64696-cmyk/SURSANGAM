@@ -5,81 +5,94 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>SURSANGAM Electric Shop - Admin & Store</title>
   <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.0.0/firebase-app.js";
-    import { getFirestore, collection, addDoc, getDocs } from "https://www.gstatic.com/firebasejs/10.0.0/firebase-firestore.js";
-    import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.0.0/firebase-auth.js";
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+    import { getFirestore, collection, addDoc, getDocs } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+    import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
-    <script type="module">
-  // Import the functions you need from the SDKs you need
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/13.3.0/firebase-app.js";
-  import { getAnalytics } from "https://www.gstatic.com/firebasejs/13.3.0/firebase-analytics.js";
-  // TODO: Add SDKs for Firebase products that you want to use
-  // https://firebase.google.com/docs/web/setup#available-libraries
-
-  // Your web app's Firebase configuration
-  // For Firebase JS SDK v7.20.0 and later, measurementId is optional
-  const firebaseConfig = {
-    apiKey: "AIzaSyBW1nUgvHVcL1yQMzZYVqoZEeIpEu8PsFA",
-    authDomain: "sursangam-5e91f.firebaseapp.com",
-    projectId: "sursangam-5e91f",
-    storageBucket: "sursangam-5e91f.firebasestorage.app",
-    messagingSenderId: "447584888481",
-    appId: "1:447584888481:web:17ca5abfbd45ed822e32e0",
-    measurementId: "G-NMDNDF32YC"
-  };
-
-  // Initialize Firebase
-  const app = initializeApp(firebaseConfig);
-  const analytics = getAnalytics(app);
-</script>
+    // আপনার Firebase কনফিগারেশন
+    const firebaseConfig = {
+      apiKey: "AIzaSyBW1nUgvHVcL1yQMzZYVqoZEeIpEu8PsFA",
+      authDomain: "sursangam-5e91f.firebaseapp.com",
+      projectId: "sursangam-5e91f",
+      storageBucket: "sursangam-5e91f.firebasestorage.app",
+      messagingSenderId: "447584888481",
+      appId: "1:447584888481:web:17ca5abfbd45ed822e32e0",
+      measurementId: "G-NMDNDF32YC"
     };
 
+    // Firebase চালু করা
     const app = initializeApp(firebaseConfig);
     const db = getFirestore(app);
     const auth = getAuth(app);
 
+    // অ্যাডমিন লগইন ফাংশন
     window.loginAdmin = async () => {
       const email = document.getElementById("adminEmail").value;
       const pass = document.getElementById("adminPass").value;
       try {
         await signInWithEmailAndPassword(auth, email, pass);
         document.getElementById("adminPanel").style.display = "block";
+        document.getElementById("loginSection").style.display = "none";
         alert("Logged in successfully!");
       } catch (e) {
         alert("Login failed: " + e.message);
       }
     };
 
+    // নতুন প্রোডাক্ট যোগ করার ফাংশন
     window.addProduct = async () => {
       const name = document.getElementById("prodName").value;
       const price = document.getElementById("prodPrice").value;
+      if (!name || !price) {
+        alert("Please enter both product name and price.");
+        return;
+      }
       try {
         await addDoc(collection(db, "products"), { name, price, timestamp: new Date() });
         alert("Product added!");
+        document.getElementById("prodName").value = "";
+        document.getElementById("prodPrice").value = "";
         loadProducts();
       } catch (e) {
-        alert("Error adding product");
+        alert("Error adding product: " + e.message);
       }
     };
 
+    // প্রোডাক্ট লোড করার ফাংশন
     async function loadProducts() {
-      const querySnapshot = await getDocs(collection(db, "products"));
-      let html = "<h3>Available Products</h3>";
-      querySnapshot.forEach((doc) => {
-        const p = doc.data();
-        html += `<div class='product-card'><h4>${p.name}</h4><p>Price: ₹${p.price}</p></div>`;
-      });
-      document.getElementById("productGrid").innerHTML = html;
+      const productGrid = document.getElementById("productGrid");
+      try {
+        const querySnapshot = await getDocs(collection(db, "products"));
+        if (querySnapshot.empty) {
+          productGrid.innerHTML = "<p>No products available yet.</p>";
+          return;
+        }
+        let html = "";
+        querySnapshot.forEach((doc) => {
+          const p = doc.data();
+          html += `<div class='product-card'><h4>${p.name}</h4><p>Price: ₹${p.price}</p></div>`;
+        });
+        productGrid.innerHTML = html;
+      } catch (e) {
+        productGrid.innerHTML = "<p>Error loading products.</p>";
+        console.error(e);
+      }
     }
-    window.onload = loadProducts;
+
+    // পেজ লোড হলে প্রোডাক্ট দেখাবে
+    window.addEventListener("DOMContentLoaded", loadProducts);
   </script>
   <style>
-    body { font-family: Arial, sans-serif; margin: 0; padding: 20px; background: #f4f7fc; }
-    #adminPanel { display: none; background: #fff; padding: 20px; border-radius: 8px; margin-bottom: 20px; }
-    .product-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 15px; }
+    body { font-family: Arial, sans-serif; margin: 0; padding: 20px; background: #f4f7fc; color: #333; }
+    h2 { color: #071d49; }
+    #loginSection, #adminPanel { background: #fff; padding: 20px; border-radius: 8px; margin-bottom: 20px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); max-width: 400px; }
+    #adminPanel { display: none; }
+    .product-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 15px; margin-top: 15px; }
     .product-card { background: white; padding: 15px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); text-align: center; }
-    input, button { padding: 10px; margin: 5px 0; width: 100%; box-sizing: border-box; }
-    button { background: #071d49; color: white; border: none; cursor: pointer; }
+    .product-card h4 { margin: 0 0 10px 0; color: #071d49; }
+    input, button { padding: 10px; margin: 5px 0; width: 100%; box-sizing: border-box; border-radius: 4px; border: 1px solid #ccc; }
+    button { background: #071d49; color: white; border: none; cursor: pointer; font-weight: bold; }
+    button:hover { background: #0b2d6e; }
   </style>
 </head>
 <body>
@@ -100,8 +113,8 @@
     <button onclick="addProduct()">Add Product to Store</button>
   </div>
 
-  <div id="productGrid" class="product-grid">loading products...</div>
+  <h3>Available Products</h3>
+  <div id="productGrid" class="product-grid">Loading products...</div>
 
 </body>
 </html>
-
