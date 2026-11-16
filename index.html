@@ -1,6 +1,5 @@
-
 <!DOCTYPE html>
-<html lang="en">
+<html lang="bn">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -8,319 +7,264 @@
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
   <style>
-    body { padding-bottom: 70px; background-color: #f1f3f6; font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; }
-    .fk-blue { background-color: #2874f0; }
-    .fk-yellow { background-color: #ffe500; color: #2874f0; }
-    .fk-orange { background-color: #fb641b; }
+    body { padding-bottom: 70px; background-color: #0f172a; font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; color: #f8fafc; }
+    .elec-dark { background-color: #1e293b; }
+    .elec-card { background-color: #334155; }
+    .neon-blue { color: #38bdf8; }
+    .bg-neon-blue { background-color: #0284c7; }
+    .neon-gold { color: #fbbf24; }
+    .bg-neon-gold { background-color: #d97706; }
     .hide-scrollbar::-webkit-scrollbar { display: none; }
     .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+    .glow-effect { box-shadow: 0 0 15px rgba(56, 189, 248, 0.3); }
   </style>
 </head>
 <body>
 
   <!-- TOP NAVBAR -->
-  <header class="fk-blue text-white sticky top-0 z-40 shadow-md">
+  <header class="elec-dark text-white sticky top-0 z-40 border-b border-slate-700 shadow-lg">
     <div class="max-w-4xl mx-auto px-3 py-2">
       <div class="flex items-center justify-between mb-2">
         <div class="flex items-center space-x-2">
-          <i class="fas fa-bolt text-yellow-300 text-xl"></i>
+          <div class="w-8 h-8 rounded-lg bg-neon-blue flex items-center justify-center glow-effect">
+            <i class="fas fa-bolt text-white text-lg"></i>
+          </div>
           <div>
-            <h1 class="font-bold text-lg tracking-wide leading-none">SURSANGAM</h1>
-            <span class="text-[10px] italic text-yellow-300">Electric & Electronics</span>
+            <h1 class="font-black text-lg tracking-wider leading-none neon-blue">SURSANGAM</h1>
+            <span class="text-[10px] tracking-widest uppercase text-slate-400 font-semibold">Electric & Electronics</span>
           </div>
         </div>
-        <div class="flex items-center space-x-3 text-sm">
-          <button onclick="openModal('membershipModal')" class="bg-yellow-400 text-blue-900 font-bold px-2 py-1 rounded text-xs animate- pulse">
-            <i class="fas fa- crown mr-1"></i>Go Premium
+        <div class="flex items-center space-x-2 text-xs">
+          <button onclick="openModal('membershipModal')" class="bg-gradient-to-r from-amber-500 to-yellow-500 text-slate-900 font-black px-2.5 py-1 rounded-full shadow transition hover:scale-105">
+            <i class="fas fa-crown mr-1"></i>PRO
           </button>
-          <button onclick="openModal('locationModal')" class="flex items-center space-x-1 bg-blue-700 px-2 py-1 rounded text-xs">
-            <i class="fas fa-map-marker-alt text-yellow-300"></i>
+          <button onclick="openModal('locationModal')" class="flex items-center space-x-1 bg-slate-700 hover:bg-slate-600 px-2.5 py-1 rounded transition text-sky-400 font-bold border border-sky-500/30">
+            <i class="fas fa-location-crosshairs"></i>
             <span>GPS</span>
           </button>
-          <button id="authBtn" onclick="openModal('authModal')" class="bg-white text-blue-600 font-semibold px-3 py-1 rounded text-xs shadow">
+          <button id="authBtn" onclick="openModal('authModal')" class="bg-sky-600 hover:bg-sky-500 text-white font-bold px-3 py-1 rounded shadow transition">
             Login
           </button>
-          <button id="adminToggleBtn" onclick="switchTab('admin')" class="hidden bg-red-500 text-white font-bold px-2 py-1 rounded text-xs">
+          <button id="adminToggleBtn" onclick="switchTab('admin')" class="hidden bg-rose-600 hover:bg-rose-500 text-white font-black px-2.5 py-1 rounded shadow animate-pulse border border-rose-400">
             Admin
           </button>
         </div>
       </div>
       <!-- Search Bar -->
       <div class="relative">
-        <input type="text" id="searchInput" onkeyup="filterProducts()" placeholder="Search LED bulbs, fans, switches..." 
-               class="w-full py-2 pl-9 pr-4 rounded text-gray-800 text-sm focus:outline-none shadow-inner" />
-        <i class="fas fa-search absolute left-3 top-2.5 text-gray-400 text-sm"></i>
+        <input type="text" id="searchInput" onkeyup="filterProducts()" placeholder="Search LED bulbs, fans, switches, wires..." 
+               class="w-full bg-slate-900 border border-slate-700 py-2 pl-9 pr-4 rounded-lg text-white text-sm focus:outline-none focus:border-sky-400 placeholder-slate-500 shadow-inner" />
+        <i class="fas fa-search absolute left-3 top-2.5 text-sky-400 text-sm"></i>
       </div>
     </div>
   </header>
 
   <!-- MAIN CONTENT CONTAINER -->
-  <main class="max-w-4xl mx-auto">
+  <main class="max-w-4xl mx-auto px-2 pt-2">
 
     <!-- 1. FEED / HOME TAB -->
     <section id="tab-feed" class="tab-content">
       <!-- Category Horizontal Scroller -->
-      <div class="bg-white p-3 shadow-sm mb-2 flex space-x-4 overflow-x-auto hide-scrollbar">
-        <button onclick="filterByCategory('All')" class="flex flex-col items-center min-w-[60px]">
-          <div class="w-12 h-12 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 mb-1"><i class="fas fa-th-large"></i></div>
-          <span class="text-xs font-medium text-gray-700">All</span>
+      <div class="elec-card p-3 rounded-xl shadow-md mb-3 flex space-x-4 overflow-x-auto hide-scrollbar border border-slate-700/50">
+        <button onclick="filterByCategory('All')" class="flex flex-col items-center min-w-[65px] group">
+          <div class="w-12 h-12 rounded-xl bg-slate-800 group-hover:bg-sky-600 flex items-center justify-center text-sky-400 group-hover:text-white mb-1 transition shadow border border-slate-600"><i class="fas fa-border-all text-lg"></i></div>
+          <span class="text-xs font-bold text-slate-300">All</span>
         </button>
-        <button onclick="filterByCategory('LED')" class="flex flex-col items-center min-w-[60px]">
-          <div class="w-12 h-12 rounded-full bg-yellow-100 flex items-center justify-center text-yellow-600 mb-1"><i class="fas fa-lightbulb"></i></div>
-          <span class="text-xs font-medium text-gray-700">LED</span>
+        <button onclick="filterByCategory('LED')" class="flex flex-col items-center min-w-[65px] group">
+          <div class="w-12 h-12 rounded-xl bg-slate-800 group-hover:bg-amber-600 flex items-center justify-center text-amber-400 group-hover:text-white mb-1 transition shadow border border-slate-600"><i class="fas fa-lightbulb text-lg"></i></div>
+          <span class="text-xs font-bold text-slate-300">LED</span>
         </button>
-        <button onclick="filterByCategory('Fans')" class="flex flex-col items-center min-w-[60px]">
-          <div class="w-12 h-12 rounded-full bg-cyan-100 flex items-center justify-center text-cyan-600 mb-1"><i class="fas fa-fan"></i></div>
-          <span class="text-xs font-medium text-gray-700">Fans</span>
+        <button onclick="filterByCategory('Fans')" class="flex flex-col items-center min-w-[65px] group">
+          <div class="w-12 h-12 rounded-xl bg-slate-800 group-hover:bg-teal-600 flex items-center justify-center text-teal-400 group-hover:text-white mb-1 transition shadow border border-slate-600"><i class="fas fa-fan text-lg"></i></div>
+          <span class="text-xs font-bold text-slate-300">Fans</span>
         </button>
-        <button onclick="filterByCategory('Switches')" class="flex flex-col items-center min-w-[60px]">
-          <div class="w-12 h-12 rounded-full bg-purple-100 flex items-center justify-center text-purple-600 mb-1"><i class="fas fa-toggle-on"></i></div>
-          <span class="text-xs font-medium text-gray-700">Switches</span>
+        <button onclick="filterByCategory('Switches')" class="flex flex-col items-center min-w-[65px] group">
+          <div class="w-12 h-12 rounded-xl bg-slate-800 group-hover:bg-purple-600 flex items-center justify-center text-purple-400 group-hover:text-white mb-1 transition shadow border border-slate-600"><i class="fas fa-toggle-on text-lg"></i></div>
+          <span class="text-xs font-bold text-slate-300">Switches</span>
         </button>
-        <button onclick="filterByCategory('Wires')" class="flex flex-col items-center min-w-[60px]">
-          <div class="w-12 h-12 rounded-full bg-red-100 flex items-center justify-center text-red-600 mb-1"><i class="fas fa-plug"></i></div>
-          <span class="text-xs font-medium text-gray-700">Wires</span>
+        <button onclick="filterByCategory('Wires')" class="flex flex-col items-center min-w-[65px] group">
+          <div class="w-12 h-12 rounded-xl bg-slate-800 group-hover:bg-rose-600 flex items-center justify-center text-rose-400 group-hover:text-white mb-1 transition shadow border border-slate-600"><i class="fas fa-plug text-lg"></i></div>
+          <span class="text-xs font-bold text-slate-300">Wires</span>
         </button>
+        <div id="dynamicCategoryScrollerBtns" class="flex space-x-4 contents"></div>
       </div>
 
-      <!-- Promo Banner -->
-      <div class="px-2 mb-2">
-        <div class="bg-gradient-to-r from-blue-600 to-indigo-700 rounded-lg p-4 text-white shadow flex justify-between items-center cursor-pointer" onclick="openModal('membershipModal')">
-          <div>
-            <span class="bg-yellow-400 text-blue-900 text-[10px] font-bold px-2 py-0.5 rounded uppercase">Membership Perk</span>
-            <h2 class="text-lg font-bold mt-1">SURSANGAM Premium Club</h2>
-            <p class="text-xs text-blue-100">Get extra 10% off on all electrical items!</p>
+      <!-- Live Delivery & Policy Strip -->
+      <div class="bg-gradient-to-r from-sky-900/60 to-slate-900 border border-sky-500/30 rounded-lg px-3 py-2 mb-3 flex justify-between items-center text-xs text-sky-200 shadow">
+        <span><i class="fas fa-truck-fast text-sky-400 mr-2"></i><b>5 km Free Delivery</b> | Beyond 5 km: ₹15/km | Free Installation on Select Items</span>
+        <button onclick="openModal('locationModal')" class="bg-sky-600 hover:bg-sky-500 text-white font-bold px-2 py-0.5 rounded text-[10px] uppercase shadow">Check</button>
+      </div>
+
+      <!-- Prime Promo Banner -->
+      <div class="mb-3 cursor-pointer" onclick="openModal('membershipModal')">
+        <div class="bg-gradient-to-r from-amber-600 via-yellow-600 to-amber-700 rounded-xl p-4 text-slate-950 shadow-xl relative overflow-hidden border border-yellow-400">
+          <div class="absolute right-0 top-0 translate-x-4 -translate-y-4 opacity-10 text-9xl font-black"><i class="fas fa-crown"></i></div>
+          <div class="flex justify-between items-center relative z-10">
+            <div>
+              <span class="bg-slate-950 text-amber-300 text-[10px] font-black px-2.5 py-0.5 rounded-full uppercase tracking-widest shadow">VIP Club</span>
+              <h2 class="text-xl font-black mt-1 leading-tight text-white">SURSANGAM PRO PASS</h2>
+              <p class="text-xs font-bold text-slate-100 mt-0.5">Up to 40% OFF, Zero Delivery Fees & Free Installation!</p>
+            </div>
+            <div class="w-12 h-12 rounded-full bg-slate-950/20 flex items-center justify-center text-amber-300 border-2 border-amber-300 text-2xl shadow-inner">
+              <i class="fas fa-crown animate-bounce"></i>
+            </div>
           </div>
-          <i class="fas fa-crown text-4xl text-yellow-300 opacity-80"></i>
         </div>
       </div>
 
-      <!-- Product Grid -->
-      <div class="px-2">
-        <div class="flex justify-between items-center mb-2">
-          <h3 id="feedTitle" class="font-bold text-gray-800 text-sm">Suggested For You</h3>
-          <span id="productCount" class="text-xs text-gray-500">Loading...</span>
+      <!-- Suggested For You (Horizontal) -->
+      <div class="mb-3">
+        <div class="elec-card p-3 rounded-xl shadow-md border border-slate-700/50">
+          <div class="flex justify-between items-center mb-2.5">
+            <h3 class="font-black text-slate-100 text-sm flex items-center"><i class="fas fa- fire text-amber-500 mr-1.5"></i> Trending Essentials</h3>
+            <span class="text-[10px] bg-sky-900/80 text-sky-300 border border-sky-500/30 px-2 py-0.5 rounded-md font-bold uppercase">Hot Deals</span>
+          </div>
+          <div id="suggestedRow" class="flex space-x-3 overflow-x-auto hide-scrollbar pb-1">
+            <!-- Populated dynamically -->
+          </div>
         </div>
-        <div id="productGrid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2"></div>
+      </div>
+
+      <!-- Main Product Grid -->
+      <div>
+        <div class="flex justify-between items-center mb-2 px-1">
+          <h3 id="feedTitle" class="font-black text-slate-100 text-base">All Products</h3>
+          <span id="productCount" class="text-xs font-bold text-sky-400 bg-sky-950/80 px-2.5 py-0.5 rounded border border-sky-800">Loading...</span>
+        </div>
+        <div id="productGrid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
+          <!-- Products rendered dynamically -->
+        </div>
       </div>
     </section>
 
     <!-- 2. CATEGORIES TAB -->
-    <section id="tab-categories" class="tab-content hidden p-3">
-      <h2 class="font-bold text-lg text-gray-800 mb-3">Shop by Category</h2>
-      <div class="grid grid-cols-2 gap-3">
-        <div onclick="filterByCategory('LED'); switchTab('feed')" class="bg-white p-4 rounded-lg shadow-sm flex items-center space-x-3 cursor-pointer border">
-          <i class="fas fa-lightbulb text-2xl text-yellow-500"></i>
-          <div><h4 class="font-bold text-sm">LED Lighting</h4><p class="text-xs text-gray-500">Bulbs, Panels</p></div>
+    <section id="tab-categories" class="tab-content hidden p-2">
+      <h2 class="font-black text-lg text-slate-100 mb-3 flex items-center"><i class="fas fa-th-large text-sky-400 mr-2"></i> Shop by Category</h2>
+      <div id="categoryGrid" class="grid grid-cols-2 gap-3 mb-4">
+        <div onclick="filterByCategory('LED'); switchTab('feed')" class="elec-card p-4 rounded-xl shadow border border-slate-700 flex items-center space-x-3 cursor-pointer hover:border-amber-500 transition group">
+          <div class="w-12 h-12 rounded-lg bg-amber-500/10 flex items-center justify-center text-amber-400 group-hover:scale-110 transition"><i class="fas fa-lightbulb text-2xl"></i></div>
+          <div><h4 class="font-bold text-sm text-slate-100">LED Lighting</h4><p class="text-[11px] text-slate-400">Bulbs, Panels, Lamps</p></div>
         </div>
-        <div onclick="filterByCategory('Fans'); switchTab('feed')" class="bg-white p-4 rounded-lg shadow-sm flex items-center space-x-3 cursor-pointer border">
-          <i class="fas fa-fan text-2xl text-cyan-500"></i>
-          <div><h4 class="font-bold text-sm">Fans</h4><p class="text-xs text-gray-500">Ceiling, Exhaust</p></div>
+        <div onclick="filterByCategory('Fans'); switchTab('feed')" class="elec-card p-4 rounded-xl shadow border border-slate-700 flex items-center space-x-3 cursor-pointer hover:border-teal-500 transition group">
+          <div class="w-12 h-12 rounded-lg bg-teal-500/10 flex items-center justify-center text-teal-400 group-hover:scale-110 transition"><i class="fas fa-fan text-2xl"></i></div>
+          <div><h4 class="font-bold text-sm text-slate-100">Fans</h4><p class="text-[11px] text-slate-400">Ceiling, Exhaust</p></div>
         </div>
-        <div onclick="filterByCategory('Switches'); switchTab('feed')" class="bg-white p-4 rounded-lg shadow-sm flex items-center space-x-3 cursor-pointer border">
-          <i class="fas fa-toggle-on text-2xl text-purple-500"></i>
-          <div><h4 class="font-bold text-sm">Switches</h4><p class="text-xs text-gray-500">Modular, MCB</p></div>
+        <div onclick="filterByCategory('Switches'); switchTab('feed')" class="elec-card p-4 rounded-xl shadow border border-slate-700 flex items-center space-x-3 cursor-pointer hover:border-purple-500 transition group">
+          <div class="w-12 h-12 rounded-lg bg-purple-500/10 flex items-center justify-center text-purple-400 group-hover:scale-110 transition"><i class="fas fa-toggle-on text-2xl"></i></div>
+          <div><h4 class="font-bold text-sm text-slate-100">Switches</h4><p class="text-[11px] text-slate-400">Modular, MCB Boards</p></div>
         </div>
-        <div onclick="filterByCategory('Wires'); switchTab('feed')" class="bg-white p-4 rounded-lg shadow-sm flex items-center space-x-3 cursor-pointer border">
-          <i class="fas fa-plug text-2xl text-red-500"></i>
-          <div><h4 class="font-bold text-sm">Wires & Cables</h4><p class="text-xs text-gray-500">Coils, Flexi</p></div>
+        <div onclick="filterByCategory('Wires'); switchTab('feed')" class="elec-card p-4 rounded-xl shadow border border-slate-700 flex items-center space-x-3 cursor-pointer hover:border-rose-500 transition group">
+          <div class="w-12 h-12 rounded-lg bg-rose-500/10 flex items-center justify-center text-rose-400 group-hover:scale-110 transition"><i class="fas fa-plug text-2xl"></i></div>
+          <div><h4 class="font-bold text-sm text-slate-100">Wires & Cables</h4><p class="text-[11px] text-slate-400">Coils, Flexi Wires</p></div>
         </div>
+      </div>
+
+      <div id="dynamicCategoriesList" class="grid grid-cols-2 gap-3 mb-4"></div>
+
+      <!-- Customer Support Card -->
+      <div class="elec-card p-5 rounded-xl shadow-md border border-sky-500/30">
+        <h3 class="font-bold text-sm text-slate-100 mb-1 flex items-center"><i class="fas fa-headset text-sky-400 mr-2 text-base"></i> Need Assistance? Support Desk</h3>
+        <p class="text-xs text-slate-400 mb-3">Facing issues with orders, bulk quotes, or electrical installation?</p>
+        <button onclick="switchTab('support')" class="w-full bg-gradient-to-r from-sky-600 to-blue-600 hover:from-sky-500 hover:to-blue-500 text-white py-2.5 rounded-lg text-xs font-bold shadow transition flex items-center justify-center">
+          <i class="fas fa-comment-dots mr-2"></i> Open Live Chat with Admin
+        </button>
       </div>
     </section>
 
     <!-- 3. WISHLIST TAB -->
-    <section id="tab-wishlist" class="tab-content hidden p-3">
-      <h2 class="font-bold text-lg text-gray-800 mb-3">My Wishlist</h2>
-      <div id="wishlistGrid" class="grid grid-cols-2 sm:grid-cols-3 gap-2"></div>
+    <section id="tab-wishlist" class="tab-content hidden p-2">
+      <h2 class="font-black text-lg text-slate-100 mb-3 flex items-center"><i class="fas fa-heart text-rose-500 mr-2"></i> My Wishlist</h2>
+      <div id="wishlistGrid" class="grid grid-cols-2 sm:grid-cols-3 gap-3">
+        <p class="text-sm text-slate-500 col-span-full py-10 text-center">Your wishlist is empty.</p>
+      </div>
     </section>
 
     <!-- 4. CART & ORDERS TAB -->
-    <section id="tab-cart" class="tab-content hidden p-3">
-      <div class="flex border-b bg-white rounded-t-lg mb-3">
-        <button onclick="toggleCartOrders('cart')" id="btnSubCart" class="w-1/2 py-2.5 text-sm font-bold text-blue-600 border-b-2 border-blue-600">My Cart</button>
-        <button onclick="toggleCartOrders('orders')" id="btnSubOrders" class="w-1/2 py-2.5 text-sm font-semibold text-gray-500">My Orders</button>
+    <section id="tab-cart" class="tab-content hidden p-2">
+      <div class="flex border-b border-slate-700 bg-slate-900 rounded-t-xl mb-3 overflow-hidden">
+        <button onclick="toggleCartOrders('cart')" id="btnSubCart" class="w-1/2 py-3 text-sm font-black text-sky-400 border-b-2 border-sky-400 bg-slate-800/50 transition">My Cart (<span id="cartCountBadge">0</span>)</button>
+        <button onclick="toggleCartOrders('orders')" id="btnSubOrders" class="w-1/2 py-3 text-sm font-bold text-slate-400 hover:text-white transition">My Orders</button>
       </div>
+
+      <!-- Cart View -->
       <div id="view-cart">
-        <div id="cartItemsList" class="space-y-2 mb-4"></div>
-        <div id="cartSummary" class="hidden bg-white p-4 rounded-lg shadow">
-          <h3 class="font-bold text-gray-700 border-b pb-2 mb-2 text-sm">PRICE DETAILS</h3>
-          <div class="flex justify-between text-sm mb-1"><span>Total Items</span><span id="summaryCount">0</span></div>
-          <div class="flex justify-between font-bold text-base border-t pt-2 mb-3"><span>Total Amount</span><span>₹<span id="summaryTotal">0</span></span></div>
-          <button onclick="openCheckoutModal()" class="w-full fk-orange text-white font-bold py-3 rounded shadow text-sm uppercase">Proceed to QR Payment</button>
+        <div id="cartItemsList" class="space-y-3 mb-4"></div>
+        <div id="cartSummary" class="hidden elec-card p-4 rounded-xl shadow-lg border border-slate-700">
+          <h3 class="font-black text-slate-100 border-b border-slate-705">PRICE BREAKDOWN</h3>
+          
+          <!-- Delivery Method Selector -->
+          <div class="bg-slate-950 p-3 rounded-lg border border-slate-800 mb-4 text-xs space-y-2.5">
+            <p class="font-bold text-slate-200 uppercase tracking-wider text-[11px]">Select Fulfillment Method:</p>
+            <label class="flex items-center space-x-2 cursor-pointer hover:text-white transition">
+              <input type="radio" name="deliveryType" value="within5km" checked onchange="updateCartUI()" class="accent-sky-500" />
+              <span>Standard Home Delivery (Within 5 km) — <b class="text-emerald-400 font-bold">FREE</b></span>
+            </label>
+            <label class="flex items-center space-x-2 cursor-pointer hover:text-white transition">
+              <input type="radio" name="deliveryType" value="beyond5km" onchange="updateCartUI()" class="accent-sky-500" />
+              <span>Long Distance Delivery (Beyond 5 km) — <b class="text-amber-400 font-bold">+₹15/km Fee</b></span>
+            </label>
+            <label class="flex items-center space-x-2 cursor-pointer hover:text-white transition">
+              <input type="radio" name="deliveryType" value="pickup" onchange="updateCartUI()" class="accent-sky-500" />
+              <span>Self Store Pickup (SURSANGAM Store) — <b class="text-sky-400 font-bold">FREE</b></span>
+            </label>
+          </div>
+
+          <div class="flex justify-between text-xs mb-2 text-slate-300"><span>Items Subtotal</span><span>₹<span id="summarySubtotal">0</span></span></div>
+          <div id="primeDiscountRow" class="hidden flex justify-between text-xs mb-2 text-emerald-400 font-bold">
+            <span>VIP PRO Member Discount</span><span>-₹<span id="summaryDiscount">0</span></span>
+          </div>
+          <div class="flex justify-between text-xs mb-2 text-slate-300"><span>Installation Charge</span><span class="text-emerald-400 font-bold">FREE (Online Perk)</span></div>
+          <div class="flex justify-between text-xs mb-3 text-slate-300"><span>Delivery Fee</span><span id="summaryDeliveryFee" class="font-bold">FREE</span></div>
+          <div class="flex justify-between font-black text-lg border-t border-slate-700 pt-3 mb-4 text-white"><span>Total Payable</span><span class="neon-blue font-black text-xl">₹<span id="summaryTotal">0</span></span></div>
+          
+          <button onclick="openCheckoutModal()" class="w-full bg-gradient-to-r from-amber-500 to-yellow-500 hover:from-amber-400 hover:to-yellow-400 text-slate-950 font-black py-3.5 rounded-xl shadow-lg text-sm uppercase tracking-wider transition transform hover:scale-[1.02] flex items-center justify-center">
+            <i class="fas fa-qrcode mr-2 text-base"></i> Proceed to Admin UPI QR Payment
+          </button>
         </div>
       </div>
-      <div id="view-orders" class="hidden space-y-3"><div id="ordersList"></div></div>
+
+      <!-- Orders View -->
+      <div id="view-orders" class="hidden space-y-3"><div id="ordersList"><p class="text-sm text-slate-500 text-center py-10">No orders placed yet.</p></div></div>
     </section>
 
-    <!-- 5. ADMIN PANEL TAB -->
-    <section id="tab-admin" class="tab-content hidden p-3">
-      <!-- Analytics -->
-      <div class="bg-white p-4 rounded-lg shadow mb-4">
-        <h2 class="font-bold text-base text-gray-800 mb-3"><i class="fas fa-chart-line text-blue-600 mr-1"></i> Live Product Analytics</h2>
-        <div id="analyticsList" class="divide-y text-sm"></div>
-      </div>
-      <!-- Inventory Management -->
-      <div class="bg-white p-4 rounded-lg shadow mb-4">
-        <h2 class="font-bold text-base text-gray-800 mb-3"><i class="fas fa-tools text-blue-600 mr-1"></i> Inventory Control</h2>
-        <form id="addProductForm" onsubmit="handleAddProduct(event)" class="space-y-3">
-          <input type="text" id="prodName" required placeholder="Product Name" class="w-full border p-2 rounded text-sm" />
-          <div class="grid grid-cols-2 gap-2">
-            <input type="number" id="prodPrice" required placeholder="Price (₹)" class="w-full border p-2 rounded text-sm" />
-            <select id="prodCategory" class="w-full border p-2 rounded text-sm bg-white">
-              <option value="LED">LED</option><option value="Fans">Fans</option><option value="Switches">Switches</option><option value="Wires">Wires</option>
-            </select>
+    <!-- 5. SUPPORT / CHAT TAB -->
+    <section id="tab-support" class="tab-content hidden p-2">
+      <div class="elec-card rounded-xl shadow-lg border border-slate-700 flex flex-col h-[70vh]">
+        <div class="p-3 bg-slate-900 border-b border-slate-700 rounded-t-xl flex items-center justify-between">
+          <div class="flex items-center space-x-2">
+            <div class="w-3 h-3 rounded-full bg-emerald-500 animate-ping"></div>
+            <span class="font-bold text-sm text-slate-100"><i class="fas fa-headset text-sky-400 mr-1.5"></i> SURSANGAM Admin Live Support</span>
           </div>
-          <input type="file" id="prodImageFile" accept="image/*" class="w-full border p-1 rounded text-xs bg-gray-50" />
-          <button type="submit" id="submitProdBtn" class="w-full fk-blue text-white font-bold py-2 rounded text-sm">+ Add Product</button>
+          <span id="chatStatusBadge" class="text-[10px] bg-sky-950 text-sky-300 px-2 py-0.5 rounded border border-sky-800 font-bold">Online</span>
+        </div>
+        <div id="chatMessages" class="flex-1 p-3 overflow-y-auto space-y-3 text-xs bg-slate-950/50">
+          <!-- Live chat messages -->
+          <div class="bg-slate-800 text-slate-300 p-2.5 rounded-lg max-w-[80%]">
+            <p class="font-bold text-sky-400 text-[10px] mb-0.5">SURSANGAM Support Bot</p>
+            Hello! How can we assist you today regarding products, bulk pricing, or installation?
+          </div>
+        </div>
+        <form onsubmit="sendSupportMessage(event)" class="p-3 bg-slate-900 border-t border-slate-700 rounded-b-xl flex space-x-2">
+          <input type="text" id="chatInput" required placeholder="Type your message to the Admin..." class="flex-1 bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-white text-xs focus:outline-none focus:border-sky-400" />
+          <button type="submit" class="bg-sky-600 hover:bg-sky-500 text-white px-4 py-2 rounded-lg font-bold text-xs shadow transition flex items-center"><i class="fas fa-paper-plane"></i></button>
         </form>
       </div>
-      <!-- Manage Products List -->
-      <div class="bg-white p-4 rounded-lg shadow mb-4">
-        <h3 class="font-bold text-sm text-gray-800 mb-2">Active Store Inventory</h3>
-        <div id="adminProductList" class="divide-y"></div>
-      </div>
     </section>
 
-  </main>
-
-  <!-- BOTTOM NAVIGATION BAR -->
-  <nav class="fixed bottom-0 left-0 right-0 bg-white border-t shadow-lg z-40">
-    <div class="max-w-4xl mx-auto flex justify-around py-2">
-      <button onclick="switchTab('feed')" class="nav-btn text-blue-600 flex flex-col items-center text-xs" data-tab="feed">
-        <i class="fas fa-home text-lg mb-0.5"></i><span>Feed</span>
-      </button>
-      <button onclick="switchTab('categories')" class="nav-btn text-gray-500 flex flex-col items-center text-xs" data-tab="categories">
-        <i class="fas fa-th-large text-lg mb-0.5"></i><span>Categories</span>
-      </button>
-      <button onclick="switchTab('wishlist')" class="nav-btn text-gray-500 flex flex-col items-center text-xs" data-tab="wishlist">
-        <i class="fas fa-heart text-lg mb-0.5"></i><span>Wishlist</span>
-      </button>
-      <button onclick="switchTab('cart')" class="nav-btn text-gray-500 flex flex-col items-center text-xs relative" data-tab="cart">
-        <i class="fas fa-shopping-cart text-lg mb-0.5"></i><span>Cart</span>
-      </button>
-      <button onclick="openModal('supportModal')" class="text-gray-500 flex flex-col items-center text-xs">
-        <i class="fas fa-headset text-lg mb-0.5"></i><span>Support</span>
-      </button>
-    </div>
-  </nav>
-
-  <!-- MODALS: Auth, Location, Checkout, Membership, Support -->
-  <div id="authModal" class="hidden fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
-    <div class="bg-white rounded-lg max-w-sm w-full p-5 relative shadow-xl">
-      <button onclick="closeModal('authModal')" class="absolute top-3 right-3 text-gray-400"><i class="fas fa-times text-lg"></i></button>
-      <h2 class="font-bold text-lg text-blue-600 mb-1">Welcome to SURSANGAM</h2>
-      <p class="text-xs text-gray-500 mb-4">One tap access using your Google Account</p>
-      <button onclick="handleGoogleLogin()" class="w-full border border-gray-300 py-2.5 rounded flex items-center justify-center space-x-2 text-sm font-medium hover:bg-gray-50">
-        <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" class="w-4 h-4" alt="Google" />
-        <span>Continue with Google</span>
-      </button>
-    </div>
-  </div>
-
-  <div id="locationModal" class="hidden fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
-    <div class="bg-white rounded-lg max-w-md w-full p-5 relative shadow-xl">
-      <button onclick="closeModal('locationModal')" class="absolute top-3 right-3 text-gray-400"><i class="fas fa-times text-lg"></i></button>
-      <h2 class="font-bold text-lg text-gray-800 mb-1"><i class="fas fa-store text-blue-600 mr-1"></i> Store Location GPS</h2>
-      <iframe class="w-full h-48 border-0 rounded my-3" src="https://maps.google.com/maps?q=Katwa,%20West%20Bengal&t=&z=14&ie=UTF8&iwloc=&output=embed"></iframe>
-      <button onclick="getUserGPS()" class="w-full bg-blue-600 text-white py-2 rounded text-xs font-bold"><i class="fas fa-location-arrow mr-1"></i>Fetch My Live GPS</button>
-      <p id="gpsStatus" class="text-xs text-center text-gray-600 mt-2"></p>
-    </div>
-  </div>
-
-  <div id="checkoutModal" class="hidden fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4 text-center">
-    <div class="bg-white rounded-lg max-w-sm w-full p-5 relative shadow-xl">
-      <button onclick="closeModal('checkoutModal')" class="absolute top-3 right-3 text-gray-400"><i class="fas fa-times text-lg"></i></button>
-      <h2 class="font-bold text-lg text-gray-800 mb-1">Scan & Pay via UPI</h2>
-      <img id="upiQrImage" src="" alt="QR" class="w-44 h-44 mx-auto my-2" />
-      <p class="font-bold text-base mb-3">Amount: ₹<span id="qrPayAmount">0</span></p>
-      <input type="text" id="deliveryAddress" placeholder="Delivery Address & Phone" class="w-full border p-2 rounded text-xs mb-3" required />
-      <button onclick="confirmOrder()" class="w-full bg-green-600 text-white font-bold py-2.5 rounded text-sm">Confirm Order</button>
-    </div>
-  </div>
-
-  <div id="membershipModal" class="hidden fixed inset-0 bg-black bg-opacity-80 z-50 flex items-center justify-center p-4 text-white text-center">
-    <div class="bg-gradient-to-b from-yellow-500 to-amber-600 rounded-xl max-w-sm w-full p-6 relative shadow-2xl border-2 border-yellow-300">
-      <button onclick="closeModal('membershipModal')" class="absolute top-3 right-3 text-white"><i class="fas fa-times text-lg"></i></button>
-      <i class="fas fa-crown text-5xl mb-2 text-yellow-200 animate-bounce"></i>
-      <h2 class="text-2xl font-black mb-1">SURSANGAM PRIME</h2>
-      <p class="text-sm text-yellow-100 mb-4">Unlock unlimited free delivery & exclusive 10% instant discount on all orders!</p>
-      <div class="bg-white/20 p-4 rounded-lg mb-5 text-left text-xs space-y-2">
-        <div class="flex items-center"><i class="fas fa-check text-yellow-300 mr-2"></i><span>Instant 10% OFF coupon applied automatically</span></div>
-        <div class="flex items-center"><i class="fas fa-check text-yellow-300 mr-2"></i><span>Priority same-day dispatch</span></div>
-        <div class="flex items-center"><i class="fas fa-check text-yellow-300 mr-2"></i><span>Dedicated VIP customer support</span></div>
+    <!-- 6. ADMIN DASHBOARD TAB -->
+    <section id="tab-admin" class="tab-content hidden p-2">
+      <div class="bg-gradient-to-r from-rose-950 to-slate-900 border border-rose-500/50 p-4 rounded-xl shadow-lg mb-4">
+        <div class="flex justify-between items-center mb-2">
+          <h2 class="font-black text-base text-rose-300 flex items-center"><i class="fas fa-shield-halved mr-2"></i> ADMIN CONTROL CENTER</h2>
+          <button onclick="logoutAdmin()" class="bg-rose-900/60 hover:bg-rose-800 text-rose-200 text-xs px-3 py-1 rounded font-bold border border-rose-600 transition">Logout Admin</button>
+        </div>
+        <p class="text-xs text-slate-300">Logged in as Master Administrator. Full read/write access to catalog, pricing rules, analytics, and UPI QR uploads.</p>
       </div>
-      <button onclick="purchaseMembership()" class="w-full bg-white text-yellow-700 font-extrabold py-3 rounded-full shadow-lg text-sm uppercase tracking-wide hover:bg-yellow-100">
-        Join Prime for ₹199/year
-      </button>
-    </div>
-  </div>
 
-  <div id="supportModal" class="hidden fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
-    <div class="bg-white rounded-lg max-w-sm w-full p-5 relative shadow-xl">
-      <button onclick="closeModal('supportModal')" class="absolute top-3 right-3 text-gray-400"><i class="fas fa-times text-lg"></i></button>
-      <h2 class="font-bold text-lg text-gray-800 mb-1"><i class="fas fa-headset text-blue-600 mr-1"></i> Customer Support</h2>
-      <p class="text-xs text-gray-500 mb-3">Facing issues? Send a direct message to our store manager.</p>
-      <textarea id="supportMsg" placeholder="Describe your issue regarding orders, payments, or products..." class="w-full border p-2 rounded text-xs h-24 mb-3"></textarea>
-      <button onclick="sendSupportMessage()" class="w-full fk-orange text-white font-bold py-2 rounded text-sm">Send Message to Admin</button>
-    </div>
-  </div>
-
-  <!-- JS LOGIC -->
-  <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-    import { getAuth, GoogleAuthProvider, signInWithPopup, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
-    import { getFirestore, collection, addDoc, doc, deleteDoc, onSnapshot, query, orderBy, updateDoc, increment } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
-    import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-storage.js";
-
-    const firebaseConfig = {
-      apiKey: "YOUR_API_KEY", authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
-      projectId: "YOUR_PROJECT_ID", storageBucket: "YOUR_PROJECT_ID.appspot.com",
-      messagingSenderId: "YOUR_SENDER_ID", appId: "YOUR_APP_ID"
-    };
-
-    const app = initializeApp(firebaseConfig);
-    const auth = getAuth(app);
-    const db = getFirestore(app);
-    const storage = getStorage(app);
-
-    const ADMIN_EMAIL = "suvadiproy64696@gmail.com";
-    let allProducts = [];
-    let currentCategory = "All";
-    let currentUser = null;
-    let isPrime = JSON.parse(localStorage.getItem("sursangam_prime")) || false;
-    let cart = JSON.parse(localStorage.getItem("sursangam_cart")) || [];
-    let wishlist = JSON.parse(localStorage.getItem("sursangam_wishlist")) || [];
-
-    // Real-time listener
-    onSnapshot(query(collection(db, "products"), orderBy("createdAt", "desc")), (snapshot) => {
-      allProducts = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-      renderProducts();
-      renderAdminProducts();
-      renderWishlist();
-      updateAnalyticsAdmin();
-    });
-
-    onAuthStateChanged(auth, (user) => {
-      currentUser = user;
-      const authBtn = document.getElementById("authBtn");
-      const adminToggleBtn = document.getElementById("adminToggleBtn");
-      if (user) {
-        authBtn.textContent = user.email.split("@")[0];
-        if (user.email === ADMIN_EMAIL) adminToggleBtn.classList.remove("hidden");
-        loadUserOrders();
-      } else {
-        authBtn.textContent = "Login";
-        adminToggleBtn.classList.add("hidden");
-      }
-    });
-
-    window.handleGoogleLogin = async () => {
-      try {
-        await signInWithPopup(auth, new GoogleAuthProvider());
-        closeModal("authModal");
-      } catch (err) { alert("Login Error: " + err.message); }
-    };
-
-    window.handleAddProduct = async (e) => {
-      e.preventDefault();
-      if (!currentUser || currentUser.emai
+      <!-- Admin Upload QR Code -->
+      <div class="elec-card p-4 rounded-xl shadow-md border border-slate-700 mb-4">
+        <h3 class="font-black text-sm text-slate-100 mb-1 flex items-center"><i class="fas fa-upload text-sky-400 mr-1.5"></i> Update Admin UPI QR Code</h3>
+        <p class="text-[11px] text-slate-400 mb-3">Upload your official shop UPI QR code image so customers can pay during checkout.</p>
+        <div class="flex space-x-2">
+          <input type="file" id="qrImageFile" accept="image/*" class="flex-1 border border-slate-700 bg-slate-950 p-1.5 rounded text-xs text-slate-300" />
+          <button onclick="uploadAdminQR()" id="uploadQrBtn" class="bg-emerald-600 hover                
