@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SURSANGAM Electric Shop - Admin & Store</title>
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.0.0/firebase-app.js";
+    import { getFirestore, collection, addDoc, getDocs } from "https://www.gstatic.com/firebasejs/10.0.0/firebase-firestore.js";
+    import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.0.0/firebase-auth.js";
+
+    const firebaseConfig = {
+      apiKey: "YOUR_FIREBASE_API_KEY",
+      authDomain: "YOUR_PROJECT.firebaseapp.com",
+      projectId: "YOUR_PROJECT_ID",
+      storageBucket: "YOUR_PROJECT.appspot.com",
+      messagingSenderId: "YOUR_SENDER_ID",
+      appId: "YOUR_APP_ID"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+    const auth = getAuth(app);
+
+    window.loginAdmin = async () => {
+      const email = document.getElementById("adminEmail").value;
+      const pass = document.getElementById("adminPass").value;
+      try {
+        await signInWithEmailAndPassword(auth, email, pass);
+        document.getElementById("adminPanel").style.display = "block";
+        alert("Logged in successfully!");
+      } catch (e) {
+        alert("Login failed: " + e.message);
+      }
+    };
+
+    window.addProduct = async () => {
+      const name = document.getElementById("prodName").value;
+      const price = document.getElementById("prodPrice").value;
+      try {
+        await addDoc(collection(db, "products"), { name, price, timestamp: new Date() });
+        alert("Product added!");
+        loadProducts();
+      } catch (e) {
+        alert("Error adding product");
+      }
+    };
+
+    async function loadProducts() {
+      const querySnapshot = await getDocs(collection(db, "products"));
+      let html = "<h3>Available Products</h3>";
+      querySnapshot.forEach((doc) => {
+        const p = doc.data();
+        html += `<div class='product-card'><h4>${p.name}</h4><p>Price: ₹${p.price}</p></div>`;
+      });
+      document.getElementById("productGrid").innerHTML = html;
+    }
+    window.onload = loadProducts;
+  </script>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 0; padding: 20px; background: #f4f7fc; }
+    #adminPanel { display: none; background: #fff; padding: 20px; border-radius: 8px; margin-bottom: 20px; }
+    .product-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 15px; }
+    .product-card { background: white; padding: 15px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); text-align: center; }
+    input, button { padding: 10px; margin: 5px 0; width: 100%; box-sizing: border-box; }
+    button { background: #071d49; color: white; border: none; cursor: pointer; }
+  </style>
+</head>
+<body>
+
+  <h2>SURSANGAM Electric Shop</h2>
+
+  <div id="loginSection">
+    <h3>Admin Access</h3>
+    <input type="email" id="adminEmail" placeholder="Admin Email">
+    <input type="password" id="adminPass" placeholder="Password">
+    <button onclick="loginAdmin()">Login</button>
+  </div>
+
+  <div id="adminPanel">
+    <h3>Inventory Management</h3>
+    <input type="text" id="prodName" placeholder="Product Name">
+    <input type="number" id="prodPrice" placeholder="Price (INR)">
+    <button onclick="addProduct()">Add Product to Store</button>
+  </div>
+
+  <div id="productGrid" class="product-grid">loading products...</div>
+
+</body>
+</html>
+
