@@ -1,120 +1,326 @@
+তৈরি হয়ে গেছে! আপনার চাহিমতো কাস্টমার সাপোর্ট, প্রোডাক্ট অ্যানালিটিক্স ড্যাশবোর্ড, প্রিমিয়াম মেম্বারশিপ এবং ফ্লিপকার্ট-এর মতো ইউজার ইন্টারফেস সহ সম্পূর্ণ কোডটি নিচে দেওয়া হলো। এটি কপি করে GitHub-এ ব্যবহার করতে পারেন।
 <!DOCTYPE html>
-<html lang="bn">
+<html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>SURSANGAM Electric Shop - Admin & Store</title>
-  <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-    import { getFirestore, collection, addDoc, getDocs } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
-    import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
-
-    // আপনার Firebase কনফিগারেশন
-    const firebaseConfig = {
-      apiKey: "AIzaSyBW1nUgvHVcL1yQMzZYVqoZEeIpEu8PsFA",
-      authDomain: "sursangam-5e91f.firebaseapp.com",
-      projectId: "sursangam-5e91f",
-      storageBucket: "sursangam-5e91f.firebasestorage.app",
-      messagingSenderId: "447584888481",
-      appId: "1:447584888481:web:17ca5abfbd45ed822e32e0",
-      measurementId: "G-NMDNDF32YC"
-    };
-
-    // Firebase চালু করা
-    const app = initializeApp(firebaseConfig);
-    const db = getFirestore(app);
-    const auth = getAuth(app);
-
-    // অ্যাডমিন লগইন ফাংশন
-    window.loginAdmin = async () => {
-      const email = document.getElementById("adminEmail").value;
-      const pass = document.getElementById("adminPass").value;
-      try {
-        await signInWithEmailAndPassword(auth, email, pass);
-        document.getElementById("adminPanel").style.display = "block";
-        document.getElementById("loginSection").style.display = "none";
-        alert("Logged in successfully!");
-      } catch (e) {
-        alert("Login failed: " + e.message);
-      }
-    };
-
-    // নতুন প্রোডাক্ট যোগ করার ফাংশন
-    window.addProduct = async () => {
-      const name = document.getElementById("prodName").value;
-      const price = document.getElementById("prodPrice").value;
-      if (!name || !price) {
-        alert("Please enter both product name and price.");
-        return;
-      }
-      try {
-        await addDoc(collection(db, "products"), { name, price, timestamp: new Date() });
-        alert("Product added!");
-        document.getElementById("prodName").value = "";
-        document.getElementById("prodPrice").value = "";
-        loadProducts();
-      } catch (e) {
-        alert("Error adding product: " + e.message);
-      }
-    };
-
-    // প্রোডাক্ট লোড করার ফাংশন
-    async function loadProducts() {
-      const productGrid = document.getElementById("productGrid");
-      try {
-        const querySnapshot = await getDocs(collection(db, "products"));
-        if (querySnapshot.empty) {
-          productGrid.innerHTML = "<p>No products available yet.</p>";
-          return;
-        }
-        let html = "";
-        querySnapshot.forEach((doc) => {
-          const p = doc.data();
-          html += `<div class='product-card'><h4>${p.name}</h4><p>Price: ₹${p.price}</p></div>`;
-        });
-        productGrid.innerHTML = html;
-      } catch (e) {
-        productGrid.innerHTML = "<p>Error loading products.</p>";
-        console.error(e);
-      }
-    }
-
-    // পেজ লোড হলে প্রোডাক্ট দেখাবে
-    window.addEventListener("DOMContentLoaded", loadProducts);
-  </script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SURSANGAM Electric Shop</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
   <style>
-    body { font-family: Arial, sans-serif; margin: 0; padding: 20px; background: #f4f7fc; color: #333; }
-    h2 { color: #071d49; }
-    #loginSection, #adminPanel { background: #fff; padding: 20px; border-radius: 8px; margin-bottom: 20px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); max-width: 400px; }
-    #adminPanel { display: none; }
-    .product-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 15px; margin-top: 15px; }
-    .product-card { background: white; padding: 15px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); text-align: center; }
-    .product-card h4 { margin: 0 0 10px 0; color: #071d49; }
-    input, button { padding: 10px; margin: 5px 0; width: 100%; box-sizing: border-box; border-radius: 4px; border: 1px solid #ccc; }
-    button { background: #071d49; color: white; border: none; cursor: pointer; font-weight: bold; }
-    button:hover { background: #0b2d6e; }
+    body { padding-bottom: 70px; background-color: #f1f3f6; font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; }
+    .fk-blue { background-color: #2874f0; }
+    .fk-yellow { background-color: #ffe500; color: #2874f0; }
+    .fk-orange { background-color: #fb641b; }
+    .hide-scrollbar::-webkit-scrollbar { display: none; }
+    .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
   </style>
 </head>
 <body>
 
-  <h2>SURSANGAM Electric Shop</h2>
+  <!-- TOP NAVBAR -->
+  <header class="fk-blue text-white sticky top-0 z-40 shadow-md">
+    <div class="max-w-4xl mx-auto px-3 py-2">
+      <div class="flex items-center justify-between mb-2">
+        <div class="flex items-center space-x-2">
+          <i class="fas fa-bolt text-yellow-300 text-xl"></i>
+          <div>
+            <h1 class="font-bold text-lg tracking-wide leading-none">SURSANGAM</h1>
+            <span class="text-[10px] italic text-yellow-300">Electric & Electronics</span>
+          </div>
+        </div>
+        <div class="flex items-center space-x-3 text-sm">
+          <button onclick="openModal('membershipModal')" class="bg-yellow-400 text-blue-900 font-bold px-2 py-1 rounded text-xs animate- pulse">
+            <i class="fas fa- crown mr-1"></i>Go Premium
+          </button>
+          <button onclick="openModal('locationModal')" class="flex items-center space-x-1 bg-blue-700 px-2 py-1 rounded text-xs">
+            <i class="fas fa-map-marker-alt text-yellow-300"></i>
+            <span>GPS</span>
+          </button>
+          <button id="authBtn" onclick="openModal('authModal')" class="bg-white text-blue-600 font-semibold px-3 py-1 rounded text-xs shadow">
+            Login
+          </button>
+          <button id="adminToggleBtn" onclick="switchTab('admin')" class="hidden bg-red-500 text-white font-bold px-2 py-1 rounded text-xs">
+            Admin
+          </button>
+        </div>
+      </div>
+      <!-- Search Bar -->
+      <div class="relative">
+        <input type="text" id="searchInput" onkeyup="filterProducts()" placeholder="Search LED bulbs, fans, switches..." 
+               class="w-full py-2 pl-9 pr-4 rounded text-gray-800 text-sm focus:outline-none shadow-inner" />
+        <i class="fas fa-search absolute left-3 top-2.5 text-gray-400 text-sm"></i>
+      </div>
+    </div>
+  </header>
 
-  <div id="loginSection">
-    <h3>Admin Access</h3>
-    <input type="email" id="adminEmail" placeholder="Admin Email">
-    <input type="password" id="adminPass" placeholder="Password">
-    <button onclick="loginAdmin()">Login</button>
+  <!-- MAIN CONTENT CONTAINER -->
+  <main class="max-w-4xl mx-auto">
+
+    <!-- 1. FEED / HOME TAB -->
+    <section id="tab-feed" class="tab-content">
+      <!-- Category Horizontal Scroller -->
+      <div class="bg-white p-3 shadow-sm mb-2 flex space-x-4 overflow-x-auto hide-scrollbar">
+        <button onclick="filterByCategory('All')" class="flex flex-col items-center min-w-[60px]">
+          <div class="w-12 h-12 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 mb-1"><i class="fas fa-th-large"></i></div>
+          <span class="text-xs font-medium text-gray-700">All</span>
+        </button>
+        <button onclick="filterByCategory('LED')" class="flex flex-col items-center min-w-[60px]">
+          <div class="w-12 h-12 rounded-full bg-yellow-100 flex items-center justify-center text-yellow-600 mb-1"><i class="fas fa-lightbulb"></i></div>
+          <span class="text-xs font-medium text-gray-700">LED</span>
+        </button>
+        <button onclick="filterByCategory('Fans')" class="flex flex-col items-center min-w-[60px]">
+          <div class="w-12 h-12 rounded-full bg-cyan-100 flex items-center justify-center text-cyan-600 mb-1"><i class="fas fa-fan"></i></div>
+          <span class="text-xs font-medium text-gray-700">Fans</span>
+        </button>
+        <button onclick="filterByCategory('Switches')" class="flex flex-col items-center min-w-[60px]">
+          <div class="w-12 h-12 rounded-full bg-purple-100 flex items-center justify-center text-purple-600 mb-1"><i class="fas fa-toggle-on"></i></div>
+          <span class="text-xs font-medium text-gray-700">Switches</span>
+        </button>
+        <button onclick="filterByCategory('Wires')" class="flex flex-col items-center min-w-[60px]">
+          <div class="w-12 h-12 rounded-full bg-red-100 flex items-center justify-center text-red-600 mb-1"><i class="fas fa-plug"></i></div>
+          <span class="text-xs font-medium text-gray-700">Wires</span>
+        </button>
+      </div>
+
+      <!-- Promo Banner -->
+      <div class="px-2 mb-2">
+        <div class="bg-gradient-to-r from-blue-600 to-indigo-700 rounded-lg p-4 text-white shadow flex justify-between items-center cursor-pointer" onclick="openModal('membershipModal')">
+          <div>
+            <span class="bg-yellow-400 text-blue-900 text-[10px] font-bold px-2 py-0.5 rounded uppercase">Membership Perk</span>
+            <h2 class="text-lg font-bold mt-1">SURSANGAM Premium Club</h2>
+            <p class="text-xs text-blue-100">Get extra 10% off on all electrical items!</p>
+          </div>
+          <i class="fas fa-crown text-4xl text-yellow-300 opacity-80"></i>
+        </div>
+      </div>
+
+      <!-- Product Grid -->
+      <div class="px-2">
+        <div class="flex justify-between items-center mb-2">
+          <h3 id="feedTitle" class="font-bold text-gray-800 text-sm">Suggested For You</h3>
+          <span id="productCount" class="text-xs text-gray-500">Loading...</span>
+        </div>
+        <div id="productGrid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2"></div>
+      </div>
+    </section>
+
+    <!-- 2. CATEGORIES TAB -->
+    <section id="tab-categories" class="tab-content hidden p-3">
+      <h2 class="font-bold text-lg text-gray-800 mb-3">Shop by Category</h2>
+      <div class="grid grid-cols-2 gap-3">
+        <div onclick="filterByCategory('LED'); switchTab('feed')" class="bg-white p-4 rounded-lg shadow-sm flex items-center space-x-3 cursor-pointer border">
+          <i class="fas fa-lightbulb text-2xl text-yellow-500"></i>
+          <div><h4 class="font-bold text-sm">LED Lighting</h4><p class="text-xs text-gray-500">Bulbs, Panels</p></div>
+        </div>
+        <div onclick="filterByCategory('Fans'); switchTab('feed')" class="bg-white p-4 rounded-lg shadow-sm flex items-center space-x-3 cursor-pointer border">
+          <i class="fas fa-fan text-2xl text-cyan-500"></i>
+          <div><h4 class="font-bold text-sm">Fans</h4><p class="text-xs text-gray-500">Ceiling, Exhaust</p></div>
+        </div>
+        <div onclick="filterByCategory('Switches'); switchTab('feed')" class="bg-white p-4 rounded-lg shadow-sm flex items-center space-x-3 cursor-pointer border">
+          <i class="fas fa-toggle-on text-2xl text-purple-500"></i>
+          <div><h4 class="font-bold text-sm">Switches</h4><p class="text-xs text-gray-500">Modular, MCB</p></div>
+        </div>
+        <div onclick="filterByCategory('Wires'); switchTab('feed')" class="bg-white p-4 rounded-lg shadow-sm flex items-center space-x-3 cursor-pointer border">
+          <i class="fas fa-plug text-2xl text-red-500"></i>
+          <div><h4 class="font-bold text-sm">Wires & Cables</h4><p class="text-xs text-gray-500">Coils, Flexi</p></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 3. WISHLIST TAB -->
+    <section id="tab-wishlist" class="tab-content hidden p-3">
+      <h2 class="font-bold text-lg text-gray-800 mb-3">My Wishlist</h2>
+      <div id="wishlistGrid" class="grid grid-cols-2 sm:grid-cols-3 gap-2"></div>
+    </section>
+
+    <!-- 4. CART & ORDERS TAB -->
+    <section id="tab-cart" class="tab-content hidden p-3">
+      <div class="flex border-b bg-white rounded-t-lg mb-3">
+        <button onclick="toggleCartOrders('cart')" id="btnSubCart" class="w-1/2 py-2.5 text-sm font-bold text-blue-600 border-b-2 border-blue-600">My Cart</button>
+        <button onclick="toggleCartOrders('orders')" id="btnSubOrders" class="w-1/2 py-2.5 text-sm font-semibold text-gray-500">My Orders</button>
+      </div>
+      <div id="view-cart">
+        <div id="cartItemsList" class="space-y-2 mb-4"></div>
+        <div id="cartSummary" class="hidden bg-white p-4 rounded-lg shadow">
+          <h3 class="font-bold text-gray-700 border-b pb-2 mb-2 text-sm">PRICE DETAILS</h3>
+          <div class="flex justify-between text-sm mb-1"><span>Total Items</span><span id="summaryCount">0</span></div>
+          <div class="flex justify-between font-bold text-base border-t pt-2 mb-3"><span>Total Amount</span><span>₹<span id="summaryTotal">0</span></span></div>
+          <button onclick="openCheckoutModal()" class="w-full fk-orange text-white font-bold py-3 rounded shadow text-sm uppercase">Proceed to QR Payment</button>
+        </div>
+      </div>
+      <div id="view-orders" class="hidden space-y-3"><div id="ordersList"></div></div>
+    </section>
+
+    <!-- 5. ADMIN PANEL TAB -->
+    <section id="tab-admin" class="tab-content hidden p-3">
+      <!-- Analytics -->
+      <div class="bg-white p-4 rounded-lg shadow mb-4">
+        <h2 class="font-bold text-base text-gray-800 mb-3"><i class="fas fa-chart-line text-blue-600 mr-1"></i> Live Product Analytics</h2>
+        <div id="analyticsList" class="divide-y text-sm"></div>
+      </div>
+      <!-- Inventory Management -->
+      <div class="bg-white p-4 rounded-lg shadow mb-4">
+        <h2 class="font-bold text-base text-gray-800 mb-3"><i class="fas fa-tools text-blue-600 mr-1"></i> Inventory Control</h2>
+        <form id="addProductForm" onsubmit="handleAddProduct(event)" class="space-y-3">
+          <input type="text" id="prodName" required placeholder="Product Name" class="w-full border p-2 rounded text-sm" />
+          <div class="grid grid-cols-2 gap-2">
+            <input type="number" id="prodPrice" required placeholder="Price (₹)" class="w-full border p-2 rounded text-sm" />
+            <select id="prodCategory" class="w-full border p-2 rounded text-sm bg-white">
+              <option value="LED">LED</option><option value="Fans">Fans</option><option value="Switches">Switches</option><option value="Wires">Wires</option>
+            </select>
+          </div>
+          <input type="file" id="prodImageFile" accept="image/*" class="w-full border p-1 rounded text-xs bg-gray-50" />
+          <button type="submit" id="submitProdBtn" class="w-full fk-blue text-white font-bold py-2 rounded text-sm">+ Add Product</button>
+        </form>
+      </div>
+      <!-- Manage Products List -->
+      <div class="bg-white p-4 rounded-lg shadow mb-4">
+        <h3 class="font-bold text-sm text-gray-800 mb-2">Active Store Inventory</h3>
+        <div id="adminProductList" class="divide-y"></div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- BOTTOM NAVIGATION BAR -->
+  <nav class="fixed bottom-0 left-0 right-0 bg-white border-t shadow-lg z-40">
+    <div class="max-w-4xl mx-auto flex justify-around py-2">
+      <button onclick="switchTab('feed')" class="nav-btn text-blue-600 flex flex-col items-center text-xs" data-tab="feed">
+        <i class="fas fa-home text-lg mb-0.5"></i><span>Feed</span>
+      </button>
+      <button onclick="switchTab('categories')" class="nav-btn text-gray-500 flex flex-col items-center text-xs" data-tab="categories">
+        <i class="fas fa-th-large text-lg mb-0.5"></i><span>Categories</span>
+      </button>
+      <button onclick="switchTab('wishlist')" class="nav-btn text-gray-500 flex flex-col items-center text-xs" data-tab="wishlist">
+        <i class="fas fa-heart text-lg mb-0.5"></i><span>Wishlist</span>
+      </button>
+      <button onclick="switchTab('cart')" class="nav-btn text-gray-500 flex flex-col items-center text-xs relative" data-tab="cart">
+        <i class="fas fa-shopping-cart text-lg mb-0.5"></i><span>Cart</span>
+      </button>
+      <button onclick="openModal('supportModal')" class="text-gray-500 flex flex-col items-center text-xs">
+        <i class="fas fa-headset text-lg mb-0.5"></i><span>Support</span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- MODALS: Auth, Location, Checkout, Membership, Support -->
+  <div id="authModal" class="hidden fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
+    <div class="bg-white rounded-lg max-w-sm w-full p-5 relative shadow-xl">
+      <button onclick="closeModal('authModal')" class="absolute top-3 right-3 text-gray-400"><i class="fas fa-times text-lg"></i></button>
+      <h2 class="font-bold text-lg text-blue-600 mb-1">Welcome to SURSANGAM</h2>
+      <p class="text-xs text-gray-500 mb-4">One tap access using your Google Account</p>
+      <button onclick="handleGoogleLogin()" class="w-full border border-gray-300 py-2.5 rounded flex items-center justify-center space-x-2 text-sm font-medium hover:bg-gray-50">
+        <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" class="w-4 h-4" alt="Google" />
+        <span>Continue with Google</span>
+      </button>
+    </div>
   </div>
 
-  <div id="adminPanel">
-    <h3>Inventory Management</h3>
-    <input type="text" id="prodName" placeholder="Product Name">
-    <input type="number" id="prodPrice" placeholder="Price (INR)">
-    <button onclick="addProduct()">Add Product to Store</button>
+  <div id="locationModal" class="hidden fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
+    <div class="bg-white rounded-lg max-w-md w-full p-5 relative shadow-xl">
+      <button onclick="closeModal('locationModal')" class="absolute top-3 right-3 text-gray-400"><i class="fas fa-times text-lg"></i></button>
+      <h2 class="font-bold text-lg text-gray-800 mb-1"><i class="fas fa-store text-blue-600 mr-1"></i> Store Location GPS</h2>
+      <iframe class="w-full h-48 border-0 rounded my-3" src="https://maps.google.com/maps?q=Katwa,%20West%20Bengal&t=&z=14&ie=UTF8&iwloc=&output=embed"></iframe>
+      <button onclick="getUserGPS()" class="w-full bg-blue-600 text-white py-2 rounded text-xs font-bold"><i class="fas fa-location-arrow mr-1"></i>Fetch My Live GPS</button>
+      <p id="gpsStatus" class="text-xs text-center text-gray-600 mt-2"></p>
+    </div>
   </div>
 
-  <h3>Available Products</h3>
-  <div id="productGrid" class="product-grid">Loading products...</div>
+  <div id="checkoutModal" class="hidden fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4 text-center">
+    <div class="bg-white rounded-lg max-w-sm w-full p-5 relative shadow-xl">
+      <button onclick="closeModal('checkoutModal')" class="absolute top-3 right-3 text-gray-400"><i class="fas fa-times text-lg"></i></button>
+      <h2 class="font-bold text-lg text-gray-800 mb-1">Scan & Pay via UPI</h2>
+      <img id="upiQrImage" src="" alt="QR" class="w-44 h-44 mx-auto my-2" />
+      <p class="font-bold text-base mb-3">Amount: ₹<span id="qrPayAmount">0</span></p>
+      <input type="text" id="deliveryAddress" placeholder="Delivery Address & Phone" class="w-full border p-2 rounded text-xs mb-3" required />
+      <button onclick="confirmOrder()" class="w-full bg-green-600 text-white font-bold py-2.5 rounded text-sm">Confirm Order</button>
+    </div>
+  </div>
 
-</body>
-</html>
+  <div id="membershipModal" class="hidden fixed inset-0 bg-black bg-opacity-80 z-50 flex items-center justify-center p-4 text-white text-center">
+    <div class="bg-gradient-to-b from-yellow-500 to-amber-600 rounded-xl max-w-sm w-full p-6 relative shadow-2xl border-2 border-yellow-300">
+      <button onclick="closeModal('membershipModal')" class="absolute top-3 right-3 text-white"><i class="fas fa-times text-lg"></i></button>
+      <i class="fas fa-crown text-5xl mb-2 text-yellow-200 animate-bounce"></i>
+      <h2 class="text-2xl font-black mb-1">SURSANGAM PRIME</h2>
+      <p class="text-sm text-yellow-100 mb-4">Unlock unlimited free delivery & exclusive 10% instant discount on all orders!</p>
+      <div class="bg-white/20 p-4 rounded-lg mb-5 text-left text-xs space-y-2">
+        <div class="flex items-center"><i class="fas fa-check text-yellow-300 mr-2"></i><span>Instant 10% OFF coupon applied automatically</span></div>
+        <div class="flex items-center"><i class="fas fa-check text-yellow-300 mr-2"></i><span>Priority same-day dispatch</span></div>
+        <div class="flex items-center"><i class="fas fa-check text-yellow-300 mr-2"></i><span>Dedicated VIP customer support</span></div>
+      </div>
+      <button onclick="purchaseMembership()" class="w-full bg-white text-yellow-700 font-extrabold py-3 rounded-full shadow-lg text-sm uppercase tracking-wide hover:bg-yellow-100">
+        Join Prime for ₹199/year
+      </button>
+    </div>
+  </div>
+
+  <div id="supportModal" class="hidden fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
+    <div class="bg-white rounded-lg max-w-sm w-full p-5 relative shadow-xl">
+      <button onclick="closeModal('supportModal')" class="absolute top-3 right-3 text-gray-400"><i class="fas fa-times text-lg"></i></button>
+      <h2 class="font-bold text-lg text-gray-800 mb-1"><i class="fas fa-headset text-blue-600 mr-1"></i> Customer Support</h2>
+      <p class="text-xs text-gray-500 mb-3">Facing issues? Send a direct message to our store manager.</p>
+      <textarea id="supportMsg" placeholder="Describe your issue regarding orders, payments, or products..." class="w-full border p-2 rounded text-xs h-24 mb-3"></textarea>
+      <button onclick="sendSupportMessage()" class="w-full fk-orange text-white font-bold py-2 rounded text-sm">Send Message to Admin</button>
+    </div>
+  </div>
+
+  <!-- JS LOGIC -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+    import { getAuth, GoogleAuthProvider, signInWithPopup, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+    import { getFirestore, collection, addDoc, doc, deleteDoc, onSnapshot, query, orderBy, updateDoc, increment } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+    import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-storage.js";
+
+    const firebaseConfig = {
+      apiKey: "YOUR_API_KEY", authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
+      projectId: "YOUR_PROJECT_ID", storageBucket: "YOUR_PROJECT_ID.appspot.com",
+      messagingSenderId: "YOUR_SENDER_ID", appId: "YOUR_APP_ID"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getFirestore(app);
+    const storage = getStorage(app);
+
+    const ADMIN_EMAIL = "suvadiproy64696@gmail.com";
+    let allProducts = [];
+    let currentCategory = "All";
+    let currentUser = null;
+    let isPrime = JSON.parse(localStorage.getItem("sursangam_prime")) || false;
+    let cart = JSON.parse(localStorage.getItem("sursangam_cart")) || [];
+    let wishlist = JSON.parse(localStorage.getItem("sursangam_wishlist")) || [];
+
+    // Real-time listener
+    onSnapshot(query(collection(db, "products"), orderBy("createdAt", "desc")), (snapshot) => {
+      allProducts = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+      renderProducts();
+      renderAdminProducts();
+      renderWishlist();
+      updateAnalyticsAdmin();
+    });
+
+    onAuthStateChanged(auth, (user) => {
+      currentUser = user;
+      const authBtn = document.getElementById("authBtn");
+      const adminToggleBtn = document.getElementById("adminToggleBtn");
+      if (user) {
+        authBtn.textContent = user.email.split("@")[0];
+        if (user.email === ADMIN_EMAIL) adminToggleBtn.classList.remove("hidden");
+        loadUserOrders();
+      } else {
+        authBtn.textContent = "Login";
+        adminToggleBtn.classList.add("hidden");
+      }
+    });
+
+    window.handleGoogleLogin = async () => {
+      try {
+        await signInWithPopup(auth, new GoogleAuthProvider());
+        closeModal("authModal");
+      } catch (err) { alert("Login Error: " + err.message); }
+    };
+
+    window.handleAddProduct = async (e) => {
+      e.preventDefault();
+      if (!currentUser || currentUser.emai
